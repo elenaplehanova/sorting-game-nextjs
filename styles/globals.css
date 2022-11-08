@@ -4,17 +4,27 @@
 
 :root {
     /* colors */
-    --clr-dark: 230 35% 7%;
-    --clr-light: 231 77% 90%;
+    --clr-dark: 270, 5%, 26%;
     --clr-white: 0 0% 100%;
+    --clr-green: 144, 72%, 55%;
+    --clr-yellow: 47, 100%, 64%;
+    --clr-blue: 211, 79%, 30%;
+    --clr-violet: 245, 80%, 70%;
+    --clr-dark-violet: 214, 52%, 13%;
 
     /* font-sizes */
+    --fs-800: 2rem;
+    --fs-600: 1.5rem;
     --fs-400: 1rem;
 
     /* font-families */
-    --ff-serif: "Bellefair", serif;
-    --ff-sans-cond: "Barlow Condensed", sans-serif;
-    --ff-sans-normal: "Barlow", sans-serif;
+    --ff-sans-normal: Arial, Helvetica, sans-serif;
+    --ff-sans-special: Calibri, "Gill Sans", "Gill Sans MT", "Trebuchet MS", sans-serif;
+
+    /* font-weight */
+    --fw-regular: 400;
+    --fw-semi-bold: 500;
+    --fw-bold: 700;
 }
 
 @media (min-width: 35em) {
@@ -69,7 +79,9 @@ p {
 /* set up the body */
 body {
     font-family: var(--ff-sans-normal);
-    font-size: var(--fs-400);
+    font-size: var(--fs-800);
+    font-weight: var(--fw-bold);
+
     color: hsl(var(--clr-white));
     background-color: hsl(var(--clr-dark));
     line-height: 1.5;
@@ -106,52 +118,4 @@ select {
         transition-duration: 0.01ms !important;
         scroll-behavior: auto !important;
     }
-}
-
-/* ------------------- */
-/* Utility classes     */
-/* ------------------- */
-
-/* general */
-
-.flex {
-    display: flex;
-    gap: var(--gap, 1rem);
-}
-
-.grid {
-    display: grid;
-    gap: var(--gap, 1rem);
-}
-
-.d-block {
-    display: block;
-}
-
-.container {
-    padding-inline: 2em;
-    margin-inline: auto;
-    max-width: 80rem;
-}
-
-/* colors */
-
-.bg-dark {
-    background-color: hsl(var(--clr-dark));
-}
-.bg-accent {
-    background-color: hsl(var(--clr-light));
-}
-.bg-white {
-    background-color: hsl(var(--clr-white));
-}
-
-.text-dark {
-    color: hsl(var(--clr-dark));
-}
-.text-accent {
-    color: hsl(var(--clr-light));
-}
-.text-white {
-    color: hsl(var(--clr-white));
 }
