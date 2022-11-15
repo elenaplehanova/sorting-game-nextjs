@@ -3,9 +3,9 @@ import Link from "next/link";
 import Button from "../components/Button";
 import Slider from "../components/Slider";
 import styled from "@emotion/styled";
-import React, { useEffect, useState } from "react";
-import { SliderValue } from "../types";
-import { GameSetup } from "../interfaces";
+import { useState } from "react";
+import { SliderValue } from "../services/types";
+import { GameSetup, ReferenceValues } from "../services/interfaces";
 
 const Div = styled.div`
     display: flex;
@@ -23,6 +23,7 @@ const Div = styled.div`
 const Form = styled.form`
     position: relative;
     padding: 2rem;
+    margin: auto;
     color: hsl(var(--clr-dark));
     background-color: hsl(var(--clr-white));
 
@@ -63,13 +64,17 @@ const WarningButton = styled(Button)`
 `;
 
 export default function Home() {
-    const mapArtifacts = [2, 3, 4, 5];
-    const [countArtifacts, setCountArtifacts] = useState<SliderValue>(mapArtifacts[0]);
+    const referenceValues: ReferenceValues = {
+        mapArtifacts: [2, 3, 4, 5],
+        mapValues: ["А", 9, 19, 50, 99, 999],
+        orderToHigh: true,
+    };
 
-    const mapValues = ["А", 9, 19, 50, 99, 999];
-    const [value, setValue] = useState<SliderValue>(mapValues[0]);
-
-    const [orderToHigh, setOrderToHigh] = useState<boolean>(true);
+    const [countArtifacts, setCountArtifacts] = useState<SliderValue>(
+        referenceValues.mapArtifacts[0]
+    );
+    const [value, setValue] = useState<SliderValue>(referenceValues.mapValues[0]);
+    const [orderToHigh, setOrderToHigh] = useState<boolean>(referenceValues.orderToHigh);
 
     const gameSetup: GameSetup = {
         countArtifacts: countArtifacts,
@@ -95,10 +100,14 @@ export default function Home() {
             <Form>
                 <Slider
                     title="Кол-во предметов"
-                    values={mapArtifacts}
+                    values={referenceValues.mapArtifacts}
                     setValue={setCountArtifacts}
                 ></Slider>
-                <Slider title="Значения" values={mapValues} setValue={setValue}></Slider>
+                <Slider
+                    title="Значения"
+                    values={referenceValues.mapValues}
+                    setValue={setValue}
+                ></Slider>
                 <ButtonsDiv>
                     <WarningButton disabled={!orderToHigh} onClick={buttonHandler}>
                         По возрастанию
