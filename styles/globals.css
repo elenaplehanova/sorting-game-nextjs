@@ -4,27 +4,29 @@
 
 :root {
     /* colors */
-    --clr-dark: 270, 5%, 26%;
+    --clr-dark: 270 5% 26%;
     --clr-white: 0 0% 100%;
-    --clr-green: 144, 72%, 55%;
-    --clr-yellow: 47, 100%, 64%;
-    --clr-blue: 211, 79%, 30%;
-    --clr-violet: 245, 80%, 70%;
-    --clr-dark-violet: 214, 52%, 13%;
+    --clr-green: 144 72% 55%;
+    --clr-yellow: 47 100% 64%;
+    --clr-blue: 211 79% 30%;
+    --clr-dark-blue: 238 32% 21%;
+    --clr-violet: 245 80% 70%;
+    --clr-dark-violet: 214 52% 13%;
 
     /* font-sizes */
+    --fs-900: 3rem;
     --fs-800: 2rem;
     --fs-600: 1.5rem;
     --fs-400: 1rem;
 
     /* font-families */
     --ff-sans-normal: Arial, Helvetica, sans-serif;
-    --ff-sans-special: Calibri, "Gill Sans", "Gill Sans MT", "Trebuchet MS", sans-serif;
+    --ff-sans-special: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
 
     /* font-weight */
     --fw-regular: 400;
-    --fw-semi-bold: 500;
-    --fw-bold: 700;
+    --fw-semi-bold: 600;
+    --fw-bold: 800;
 }
 
 @media (min-width: 35em) {

@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction, useState } from "react";
 import styled from "@emotion/styled";
-import { SliderValue } from "../types";
+import { SliderValue } from "../services/types";
 
 interface Props {
     children?: React.ReactNode;
@@ -59,8 +59,8 @@ const Input = styled.input`
 const Slider: React.FC<Props> = ({ title, values, setValue }) => {
     const [index, setIndex] = useState(0);
 
-    const inputHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const newIndex = event.target.valueAsNumber;
+    const inputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const newIndex = e.target.valueAsNumber;
         setIndex(newIndex);
         setValue(values[newIndex]);
     };
