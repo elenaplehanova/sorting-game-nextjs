@@ -6,14 +6,22 @@
     /* colors */
     --clr-dark: 270 5% 26%;
     --clr-white: 0 0% 100%;
+
     --clr-green: 144 72% 55%;
-    --clr-yellow: 47 100% 64%;
+    --clr-dark-green: 137 62% 31%;
+
+    --clr-light-yellow: 50 100% 92%;
+    --clr-yellow: 50 100% 64%;
+
     --clr-blue: 211 79% 30%;
     --clr-dark-blue: 238 32% 21%;
-    --clr-violet: 245 80% 70%;
+
+    --clr-light-violet: 245 80% 70%;
+    --clr-violet: 259 43% 44%;
     --clr-dark-violet: 214 52% 13%;
 
     /* font-sizes */
+    --fs-1000: 8rem;
     --fs-900: 3rem;
     --fs-800: 2rem;
     --fs-600: 1.5rem;

@@ -6,6 +6,7 @@ import styled from "@emotion/styled";
 import { useState } from "react";
 import { SliderValue } from "../services/types";
 import { GameSetup, ReferenceValues } from "../services/interfaces";
+import SuccessButton from "../components/SuccessButton";
 
 const Div = styled.div`
     display: flex;
@@ -30,7 +31,7 @@ const Form = styled.form`
     border: 10px solid transparent;
     border-radius: 2rem;
     background: linear-gradient(hsl(var(--clr-white)), hsl(var(--clr-white))) padding-box,
-        linear-gradient(hsl(var(--clr-violet)), hsl(var(--clr-dark-violet))) border-box;
+        linear-gradient(hsl(var(--clr-light-violet)), hsl(var(--clr-dark-violet))) border-box;
 
     & > *:not(:first-child) {
         margin-top: 4rem;
@@ -40,17 +41,6 @@ const Form = styled.form`
 const ButtonsDiv = styled.div`
     display: flex;
     gap: 2rem;
-`;
-
-const SuccessButton = styled(Button)`
-    display: block;
-    margin: auto;
-    background-color: hsl(var(--clr-green));
-    padding-inline: 3rem;
-
-    & * {
-        color: hsl(var(--clr-white));
-    }
 `;
 
 const WarningButton = styled(Button)`
