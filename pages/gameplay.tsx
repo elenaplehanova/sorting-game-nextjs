@@ -1,6 +1,7 @@
 import { css, SerializedStyles } from "@emotion/react";
 import styled from "@emotion/styled";
 import React, { useEffect, useState } from "react";
+import WinningBanner from "../components/WinningBanner";
 import { Card } from "../services/interfaces";
 var _ = require("lodash");
 
@@ -9,6 +10,17 @@ interface Props {
     card: Card;
     indexCard?: number;
 }
+
+const Div = styled.div`
+    position: relative;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+    min-height: 100vh;
+`;
 
 const GameplayDiv = styled.div`
     display: grid;
@@ -245,44 +257,50 @@ export default function Gameplay() {
         e.preventDefault();
     };
 
+    const [modalActive, setModalActive] = useState(true);
+
     return (
-        <GameplayDiv>
-            <ElementsDiv>
-                {elements.length > 0 && (
-                    <>
-                        {elements.map((card, index) => (
-                            <CardDiv
-                                key={`${card.id}_Card`}
-                                draggable
-                                onDragStart={(e) => dragStartHandler(e, card)}
-                                onDragOver={dragOverHandler}
-                                card={card}
-                                indexCard={index}
-                            >
-                                {card.title}
-                            </CardDiv>
-                        ))}
-                    </>
-                )}
-            </ElementsDiv>
-            <SortingDiv>
-                <h3>По возрастанию</h3>
-            </SortingDiv>
-            <DashboardDiv onDragOver={dragOverHandler} onDrop={dropCardHandler}>
-                {dashboardElements.length > 0 && (
-                    <>
-                        {dashboardElements.map((card) => (
-                            <CardDiv
-                                key={`${card.id}_DashboardCard`}
-                                onDrop={(e) => dropHandler(e, card)}
-                                card={card}
-                            >
-                                {card.isSketchy ? "" : <span>{card.title}</span>}
-                            </CardDiv>
-                        ))}
-                    </>
-                )}
-            </DashboardDiv>
-        </GameplayDiv>
+        <Div>
+            <GameplayDiv>
+                <ElementsDiv>
+                    {elements.length > 0 && (
+                        <>
+                            {elements.map((card, index) => (
+                                <CardDiv
+                                    key={`${card.id}_Card`}
+                                    draggable
+                                    onDragStart={(e) => dragStartHandler(e, card)}
+                                    onDragOver={dragOverHandler}
+                                    card={card}
+                                    indexCard={index}
+                                >
+                                    {card.title}
+                                </CardDiv>
+                            ))}
+                        </>
+                    )}
+                </ElementsDiv>
+                <SortingDiv>
+                    <h3>По возрастанию</h3>
+                </SortingDiv>
+                <DashboardDiv onDragOver={dragOverHandler} onDrop={dropCardHandler}>
+                    {dashboardElements.length > 0 && (
+                        <>
+                            {dashboardElements.map((card) => (
+                                <CardDiv
+                                    key={`${card.id}_DashboardCard`}
+                                    onDrop={(e) => dropHandler(e, card)}
+                                    card={card}
+                                >
+                                    {card.isSketchy ? "" : <span>{card.title}</span>}
+                                </CardDiv>
+                            ))}
+                        </>
+                    )}
+                </DashboardDiv>
+            </GameplayDiv>
+
+            <WinningBanner active={modalActive} setActive={setModalActive}></WinningBanner>
+        </Div>
     );
 }
