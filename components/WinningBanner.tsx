@@ -1,13 +1,6 @@
 import styled from "@emotion/styled";
 import Link from "next/link";
-import { Dispatch, SetStateAction } from "react";
 import SuccessButton from "./SuccessButton";
-
-interface Props {
-    children?: React.ReactNode;
-    active: boolean;
-    setActive: Dispatch<SetStateAction<boolean>>;
-}
 
 const Div = styled.div`
     width: 100%;
@@ -21,6 +14,8 @@ const Div = styled.div`
 
     display: grid;
     place-items: center;
+
+    z-index: 1000;
 `;
 
 const WinningBannerDiv = styled.div`
@@ -124,15 +119,19 @@ const Star = styled.div`
     background-size: contain;
 `;
 
-const WinningBanner: React.FC<Props> = ({ active, setActive }) => {
+const Button = styled(SuccessButton)`
+    z-index: 1100;
+`;
+
+const WinningBanner: React.FC = () => {
     return (
         <Div>
             <WinningBannerDiv>
                 <H1>Победа!</H1>
                 <P>Молодец! Ты успешно справился с заданием!</P>
-                <SuccessButton>
+                <Button>
                     <Link href="/">Заново</Link>
-                </SuccessButton>
+                </Button>
                 <BorderStars>
                     <Star></Star>
                     <Star></Star>

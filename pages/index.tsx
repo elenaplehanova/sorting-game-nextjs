@@ -5,8 +5,9 @@ import Slider from "../components/Slider";
 import styled from "@emotion/styled";
 import { useState } from "react";
 import { SliderValue } from "../services/types";
-import { GameSetup, ReferenceValues } from "../services/interfaces";
 import SuccessButton from "../components/SuccessButton";
+import { useAppDispatch, useAppSelector } from "../hooks/redux";
+import { mapArtifacts, mapValues, setupSlice } from "../store/reducers/SetupSlice";
 
 const Div = styled.div`
     display: flex;
@@ -54,19 +55,16 @@ const WarningButton = styled(Button)`
 `;
 
 export default function Home() {
-    const referenceValues: ReferenceValues = {
-        mapArtifacts: [2, 3, 4, 5],
-        mapValues: ["А", 9, 19, 50, 99, 999],
-        orderToHigh: true,
-    };
+    const { gameSetup } = useAppSelector((state) => state.setupReducer);
 
-    const [countArtifacts, setCountArtifacts] = useState<SliderValue>(
-        referenceValues.mapArtifacts[0]
-    );
-    const [value, setValue] = useState<SliderValue>(referenceValues.mapValues[0]);
-    const [orderToHigh, setOrderToHigh] = useState<boolean>(referenceValues.orderToHigh);
+    const { setGameSetup } = setupSlice.actions;
+    const dispatch = useAppDispatch();
 
-    const gameSetup: GameSetup = {
+    const [countArtifacts, setCountArtifacts] = useState<SliderValue>(mapArtifacts[0]);
+    const [value, setValue] = useState<SliderValue>(mapValues[0]);
+    const [orderToHigh, setOrderToHigh] = useState<boolean>(gameSetup.orderToHigh);
+
+    const gameSetupLocal = {
         countArtifacts: countArtifacts,
         typeValues: value,
         orderToHigh: orderToHigh,
@@ -90,14 +88,10 @@ export default function Home() {
             <Form>
                 <Slider
                     title="Кол-во предметов"
-                    values={referenceValues.mapArtifacts}
+                    values={mapArtifacts}
                     setValue={setCountArtifacts}
                 ></Slider>
-                <Slider
-                    title="Значения"
-                    values={referenceValues.mapValues}
-                    setValue={setValue}
-                ></Slider>
+                <Slider title="Значения" values={mapValues} setValue={setValue}></Slider>
                 <ButtonsDiv>
                     <WarningButton disabled={!orderToHigh} onClick={buttonHandler}>
                         По возрастанию
@@ -106,7 +100,7 @@ export default function Home() {
                         По убыванию
                     </WarningButton>
                 </ButtonsDiv>
-                <SuccessButton>
+                <SuccessButton onClick={() => dispatch(setGameSetup(gameSetupLocal))}>
                     <Link href="/gameplay">Играть</Link>
                 </SuccessButton>
             </Form>
