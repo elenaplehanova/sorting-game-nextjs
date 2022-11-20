@@ -2,12 +2,13 @@ import { css, SerializedStyles } from "@emotion/react";
 import styled from "@emotion/styled";
 import React, { useEffect, useState } from "react";
 import WinningBanner from "../components/WinningBanner";
-import { Card } from "../services/interfaces";
+import { useAppSelector } from "../hooks/redux";
+import { ICard } from "../models/ICard";
 var _ = require("lodash");
 
 interface Props {
     children?: React.ReactNode;
-    card: Card;
+    card: ICard;
     indexCard?: number;
 }
 
@@ -113,16 +114,52 @@ const ElementsDiv = styled.div`
 `;
 
 const SortingDiv = styled.div`
+    display: grid;
+    position: relative;
+    padding: 0.2rem;
+
     ${textStyleCard};
 
     font-size: var(--fs-800);
-
-    background-position-x: 3rem;
-    background-repeat: no-repeat;
-    background-image: url("/images/arrow-image.png");
+    height: 5rem;
 
     & > * {
         font-weight: var(--fw-semi-bold);
+        z-index: 200;
+    }
+`;
+
+const SortingDivToHigh = styled(SortingDiv)`
+    justify-content: start;
+
+    &::before {
+        content: "";
+        position: absolute;
+        width: 30rem;
+        height: inherit;
+        background-repeat: no-repeat;
+        background-image: url("/images/arrow-image.png");
+        transform: rotate(0deg);
+        justify-self: start;
+        top: 0rem;
+        z-index: 100;
+    }
+`;
+
+const SortingDivToLow = styled(SortingDiv)`
+    justify-content: end;
+
+    &::before {
+        content: "";
+        position: absolute;
+        width: 30rem;
+        height: inherit;
+        background-repeat: no-repeat;
+        background-image: url("/images/arrow-image.png");
+        transform: rotate(180deg);
+        justify-self: end;
+        top: -1rem;
+        z-index: 100;
     }
 `;
 
@@ -188,9 +225,9 @@ export default function Gameplay() {
         { id: 5, order: 5, title: "112", imageUrl: "/images/donuts/image-donut-2.png" },
     ];
 
-    const [elements, setElements] = useState<Card[]>([]);
+    const [elements, setElements] = useState<ICard[]>([]);
     useEffect(() => {
-        let array: Card[] = _.shuffle(myElements.filter((card) => card.id !== 0));
+        let array: ICard[] = _.shuffle(myElements.filter((card) => card.id !== 0));
         setElements(
             array.map((card) => {
                 return { ...card, hidden: false };
@@ -198,7 +235,7 @@ export default function Gameplay() {
         );
     }, []);
 
-    const [dashboardElements, setDashboardElements] = useState<Card[]>([]);
+    const [dashboardElements, setDashboardElements] = useState<ICard[]>([]);
     useEffect(() => {
         setDashboardElements(
             myElements.map((card) => {
@@ -207,26 +244,17 @@ export default function Gameplay() {
         );
     }, []);
 
-    const [currentCard, setCurrentCard] = useState<Card | null>(null);
+    const [currentCard, setCurrentCard] = useState<ICard | null>(null);
 
-    const dragStartHandler = (e: React.DragEvent<HTMLDivElement>, card: Card) => {
-        console.log("dragStartHandler", card);
+    const dragStartHandler = (e: React.DragEvent<HTMLDivElement>, card: ICard) => {
         setCurrentCard(card);
-    };
-
-    const dragLeaveHandler = (e: React.DragEvent<HTMLDivElement>) => {
-        console.log("dragLeaveHandler");
-    };
-
-    const dragEndHandler = (e: React.DragEvent<HTMLDivElement>) => {
-        console.log("dragEndHandler");
     };
 
     const dragOverHandler = (e: React.DragEvent<HTMLDivElement>) => {
         e.preventDefault();
     };
 
-    const dropHandler = (e: React.DragEvent<HTMLDivElement>, card: Card) => {
+    const dropHandler = (e: React.DragEvent<HTMLDivElement>, card: ICard) => {
         e.preventDefault();
 
         if (currentCard !== null) {
@@ -257,7 +285,8 @@ export default function Gameplay() {
         e.preventDefault();
     };
 
-    const [modalActive, setModalActive] = useState(true);
+    const { gameSetup } = useAppSelector((state) => state.setupReducer);
+    const win = !dashboardElements.some((item) => item.isSketchy === true);
 
     return (
         <Div>
@@ -280,9 +309,15 @@ export default function Gameplay() {
                         </>
                     )}
                 </ElementsDiv>
-                <SortingDiv>
-                    <h3>По возрастанию</h3>
-                </SortingDiv>
+                {gameSetup.orderToHigh ? (
+                    <SortingDivToHigh>
+                        <h3>По возрастанию</h3>
+                    </SortingDivToHigh>
+                ) : (
+                    <SortingDivToLow>
+                        <h3>По убыванию</h3>
+                    </SortingDivToLow>
+                )}
                 <DashboardDiv onDragOver={dragOverHandler} onDrop={dropCardHandler}>
                     {dashboardElements.length > 0 && (
                         <>
@@ -299,8 +334,7 @@ export default function Gameplay() {
                     )}
                 </DashboardDiv>
             </GameplayDiv>
-
-            <WinningBanner active={modalActive} setActive={setModalActive}></WinningBanner>
+            {win && <WinningBanner></WinningBanner>}
         </Div>
     );
 }
