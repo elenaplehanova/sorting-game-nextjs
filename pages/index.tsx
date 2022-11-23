@@ -7,7 +7,7 @@ import { useState } from "react";
 import { SliderValue } from "../services/types";
 import SuccessButton from "../components/SuccessButton";
 import { useAppDispatch, useAppSelector } from "../hooks/redux";
-import { mapArtifacts, mapValues, setupSlice } from "../store/reducers/SetupSlice";
+import { mapArtifacts, mapValues, settingsSlice } from "../store/reducers/SettingsSlice";
 
 const Div = styled.div`
     display: flex;
@@ -55,16 +55,16 @@ const WarningButton = styled(Button)`
 `;
 
 export default function Home() {
-    const { gameSetup } = useAppSelector((state) => state.setupReducer);
+    const { gameSettings } = useAppSelector((state) => state.settingsReducer);
 
-    const { setGameSetup } = setupSlice.actions;
+    const { setGameSettings } = settingsSlice.actions;
     const dispatch = useAppDispatch();
 
-    const [countArtifacts, setCountArtifacts] = useState<SliderValue>(mapArtifacts[0]);
+    const [countArtifacts, setCountArtifacts] = useState<number>(mapArtifacts[0]);
     const [value, setValue] = useState<SliderValue>(mapValues[0]);
-    const [orderToHigh, setOrderToHigh] = useState<boolean>(gameSetup.orderToHigh);
+    const [orderToHigh, setOrderToHigh] = useState<boolean>(gameSettings.orderToHigh);
 
-    const gameSetupLocal = {
+    const gameSettingsLocal = {
         countArtifacts: countArtifacts,
         typeValues: value,
         orderToHigh: orderToHigh,
@@ -86,12 +86,16 @@ export default function Home() {
             </Head>
 
             <Form>
-                <Slider
+                <Slider<number>
                     title="Кол-во предметов"
                     values={mapArtifacts}
                     setValue={setCountArtifacts}
                 ></Slider>
-                <Slider title="Значения" values={mapValues} setValue={setValue}></Slider>
+                <Slider<SliderValue>
+                    title="Значения"
+                    values={mapValues}
+                    setValue={setValue}
+                ></Slider>
                 <ButtonsDiv>
                     <WarningButton disabled={!orderToHigh} onClick={buttonHandler}>
                         По возрастанию
@@ -100,7 +104,7 @@ export default function Home() {
                         По убыванию
                     </WarningButton>
                 </ButtonsDiv>
-                <SuccessButton onClick={() => dispatch(setGameSetup(gameSetupLocal))}>
+                <SuccessButton onClick={() => dispatch(setGameSettings(gameSettingsLocal))}>
                     <Link href="/gameplay">Играть</Link>
                 </SuccessButton>
             </Form>

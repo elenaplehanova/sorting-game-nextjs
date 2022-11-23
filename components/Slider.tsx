@@ -1,12 +1,11 @@
 import React, { Dispatch, SetStateAction, useState } from "react";
 import styled from "@emotion/styled";
-import { SliderValue } from "../services/types";
 
-interface Props {
+interface Props<T> {
     children?: React.ReactNode;
     title: string;
-    values: SliderValue[];
-    setValue: Dispatch<SetStateAction<SliderValue>>;
+    values: T[];
+    setValue: Dispatch<SetStateAction<T>>;
 }
 
 const SliderDiv = styled.div`
@@ -56,7 +55,8 @@ const Input = styled.input`
     }
 `;
 
-const Slider: React.FC<Props> = ({ title, values, setValue }) => {
+const Slider = <T,>(props: Props<T>) => {
+    const { title, values, setValue } = props;
     const [index, setIndex] = useState(0);
 
     const inputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -71,7 +71,7 @@ const Slider: React.FC<Props> = ({ title, values, setValue }) => {
             <InputDiv>
                 <Datalist id="values">
                     {values.map((item, index) => (
-                        <option key={index} value={index} label={item.toString()}></option>
+                        <option key={index} value={index} label={item as string}></option>
                     ))}
                 </Datalist>
                 <Input
@@ -89,4 +89,5 @@ const Slider: React.FC<Props> = ({ title, values, setValue }) => {
         </SliderDiv>
     );
 };
+
 export default Slider;

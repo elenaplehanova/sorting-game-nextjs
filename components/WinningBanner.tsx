@@ -8,7 +8,7 @@ const Div = styled.div`
 
     background-color: hsl(259 44% 15% / 0.6);
 
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
 
@@ -48,8 +48,8 @@ const H1 = styled.h1<{ children: string }>`
         content: var(--text);
 
         --shadow-color: hsl(var(--clr-dark-green));
-        text-shadow: var(--shadow-color) 0px 0px 30px, var(--shadow-color) 0px 2px 30px,
-            var(--shadow-color) 0px 5px 30px;
+        text-shadow: var(--shadow-color) 0px 0px 1rem, var(--shadow-color) 0px 0.2rem 1rem,
+            var(--shadow-color) 0px 0.1rem 1rem;
     }
 
     &::after {
@@ -79,34 +79,34 @@ const BorderStars = styled.div`
 
     & > :nth-child(1) {
         position: absolute;
-        width: 10rem;
+        width: 7rem;
 
-        top: -3.5rem;
-        left: -4.5rem;
+        top: -2.7rem;
+        left: -3.5rem;
     }
 
     & > :nth-child(2) {
         position: absolute;
-        width: 15rem;
+        width: 10rem;
 
         top: 20rem;
-        left: -8rem;
+        left: -6rem;
     }
 
     & > :nth-child(3) {
         position: absolute;
-        width: 15rem;
+        width: 10rem;
 
         top: 7rem;
-        left: 33rem;
+        left: 27rem;
     }
 
     & > :nth-child(4) {
         position: absolute;
-        width: 10rem;
+        width: 5rem;
 
-        top: 23rem;
-        left: 37rem;
+        top: 23.5rem;
+        left: 30.3rem;
     }
 `;
 
