@@ -1,7 +1,7 @@
 import { SliderValue } from "../services/types";
 
-export interface IGameSetup {
-    countArtifacts: SliderValue;
+export interface IGameSettings {
+    countArtifacts: number;
     typeValues: SliderValue;
     orderToHigh: boolean;
 }

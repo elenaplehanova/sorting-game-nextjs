@@ -1,16 +1,11 @@
-import { css, SerializedStyles } from "@emotion/react";
+import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import React, { useEffect, useState } from "react";
 import WinningBanner from "../components/WinningBanner";
 import { useAppSelector } from "../hooks/redux";
 import { ICard } from "../models/ICard";
-var _ = require("lodash");
 
-interface Props {
-    children?: React.ReactNode;
-    card: ICard;
-    indexCard?: number;
-}
+var _ = require("lodash");
 
 const Div = styled.div`
     position: relative;
@@ -24,10 +19,10 @@ const Div = styled.div`
 `;
 
 const GameplayDiv = styled.div`
-    display: grid;
-    grid-template-rows: 5fr 1fr 3fr;
-    place-content: center;
+    display: flex;
+    flex-direction: column;
 
+    width: 50rem;
     padding: 2rem;
 
     background-position: center;
@@ -36,7 +31,7 @@ const GameplayDiv = styled.div`
 `;
 
 const sketchyCard = () => css`
-    width: 7rem;
+    width: 6rem;
     aspect-ratio: 1;
     border-radius: 50%;
     border-width: 1px;
@@ -71,6 +66,12 @@ const textStyleCard = css`
     color: hsl(var(--clr-white));
 `;
 
+interface Props {
+    children?: React.ReactNode;
+    card: ICard;
+    indexCard?: number;
+    countCards?: number;
+}
 const CardDiv = styled.div<Props>`
     ${textStyleCard};
     font-size: var(--fs-900);
@@ -78,7 +79,7 @@ const CardDiv = styled.div<Props>`
     padding: 2rem;
     position: relative;
 
-    ${({ card, indexCard }) => {
+    ${({ card, indexCard, countCards }) => {
         let resultStyle = [];
 
         if (card.isHidden) {
@@ -91,8 +92,28 @@ const CardDiv = styled.div<Props>`
             resultStyle.push(regularCard(card.imageUrl));
         }
 
-        //if (length === 5)
-        cardPosition5.forEach((item) => {
+        let cardPosition: {
+            order: number;
+            top: string;
+        }[] = [];
+        if (countCards) {
+            switch (countCards) {
+                case 2:
+                    cardPosition = cardPosition2;
+                    break;
+                case 3:
+                    cardPosition = cardPosition3;
+                    break;
+                case 4:
+                    cardPosition = cardPosition4;
+                    break;
+                case 5:
+                    cardPosition = cardPosition5;
+                    break;
+            }
+        }
+
+        cardPosition.forEach((item) => {
             if (indexCard === item.order) {
                 resultStyle.push(`top: ${item.top};`);
             }
@@ -103,9 +124,9 @@ const CardDiv = styled.div<Props>`
 `;
 
 const ElementsDiv = styled.div`
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    place-items: center;
+    display: flex;
+    justify-content: center;
+    padding-block: 4rem;
 
     & > * {
         cursor: grab;
@@ -173,7 +194,7 @@ const DashboardDiv = styled.div`
     background-color: hsl(7, 19%, 90%);
 
     height: max-content;
-    padding-block: 2rem;
+    padding-block: 0.7rem;
     box-shadow: inset 0px 0px 2px 10px hsl(35, 18%, 81%);
     border-radius: 2.5rem;
 
@@ -194,37 +215,68 @@ const DashboardDiv = styled.div`
     }
 `;
 
+const cardPosition2 = [
+    { order: 0, top: "-3rem" },
+    { order: 1, top: "-3rem" },
+];
+
+const cardPosition3 = [{ order: 1, top: "-3rem" }];
+
+const cardPosition4 = [
+    { order: 1, top: "-3.5rem" },
+    { order: 3, top: "-3.5rem" },
+];
+
 const cardPosition5 = [
-    { order: 1, top: "-50px" },
-    { order: 2, top: "50px" },
-    { order: 3, top: "-50px" },
+    { order: 1, top: "-3.5rem" },
+    { order: 2, top: "2rem" },
+    { order: 3, top: "-3.5rem" },
 ];
 
 export default function Gameplay() {
-    const myElements = [
-        { id: 0, order: 0, title: "36", imageUrl: "/images/donuts/image-donut-1.png" },
-        {
-            id: 1,
-            order: 1,
-            title: "42",
-            imageUrl: "/images/donuts/image-donut-2.png",
-        },
-        {
-            id: 2,
-            order: 2,
-            title: "46",
-            imageUrl: "/images/donuts/image-donut-3.png",
-        },
-        {
-            id: 3,
-            order: 3,
-            title: "57",
-            imageUrl: "/images/donuts/image-donut-4.png",
-        },
-        { id: 4, order: 4, title: "64", imageUrl: "/images/donuts/image-donut-1.png" },
-        { id: 5, order: 5, title: "112", imageUrl: "/images/donuts/image-donut-2.png" },
-    ];
+    const { gameSettings } = useAppSelector((state) => state.settingsReducer);
 
+    const generateElements = () => {
+        let countImages = 4;
+
+        let elements: ICard[] = [];
+
+        let countArtifacts = gameSettings.countArtifacts + 1;
+        let typeValues = gameSettings.typeValues;
+
+        let randomArray = [];
+
+        if (typeValues === "A") {
+            randomArray = _.sampleSize(
+                _.range("A".charCodeAt(0), "Z".charCodeAt(0) + 1).map((i: number) =>
+                    String.fromCharCode(i)
+                ),
+                countArtifacts
+            ).sort();
+        } else {
+            randomArray = _.sampleSize(_.range(1, typeValues), countArtifacts).sort(
+                (a: number, b: number) => a - b
+            );
+        }
+
+        for (let i = 0; i < countArtifacts; i++) {
+            let indexImage = i + 1;
+            if (indexImage > countImages) {
+                indexImage -= countImages;
+            }
+
+            elements.push({
+                id: i,
+                order: i,
+                title: randomArray[i],
+                imageUrl: `/images/donuts/image-donut-${indexImage}.png`,
+            });
+        }
+
+        return elements;
+    };
+
+    const [myElements, setMyElements] = useState<ICard[]>(() => generateElements());
     const [elements, setElements] = useState<ICard[]>([]);
     useEffect(() => {
         let array: ICard[] = _.shuffle(myElements.filter((card) => card.id !== 0));
@@ -285,31 +337,27 @@ export default function Gameplay() {
         e.preventDefault();
     };
 
-    const { gameSetup } = useAppSelector((state) => state.setupReducer);
-    const win = !dashboardElements.some((item) => item.isSketchy === true);
-
     return (
         <Div>
             <GameplayDiv>
-                <ElementsDiv>
-                    {elements.length > 0 && (
-                        <>
-                            {elements.map((card, index) => (
-                                <CardDiv
-                                    key={`${card.id}_Card`}
-                                    draggable
-                                    onDragStart={(e) => dragStartHandler(e, card)}
-                                    onDragOver={dragOverHandler}
-                                    card={card}
-                                    indexCard={index}
-                                >
-                                    {card.title}
-                                </CardDiv>
-                            ))}
-                        </>
-                    )}
-                </ElementsDiv>
-                {gameSetup.orderToHigh ? (
+                {elements.length > 0 && (
+                    <ElementsDiv>
+                        {elements.map((card, index) => (
+                            <CardDiv
+                                key={`${card.id}_Card`}
+                                draggable
+                                onDragStart={(e) => dragStartHandler(e, card)}
+                                onDragOver={dragOverHandler}
+                                card={card}
+                                indexCard={index}
+                                countCards={elements.length}
+                            >
+                                {card.title}
+                            </CardDiv>
+                        ))}
+                    </ElementsDiv>
+                )}
+                {gameSettings.orderToHigh ? (
                     <SortingDivToHigh>
                         <h3>По возрастанию</h3>
                     </SortingDivToHigh>
@@ -318,23 +366,23 @@ export default function Gameplay() {
                         <h3>По убыванию</h3>
                     </SortingDivToLow>
                 )}
-                <DashboardDiv onDragOver={dragOverHandler} onDrop={dropCardHandler}>
-                    {dashboardElements.length > 0 && (
-                        <>
-                            {dashboardElements.map((card) => (
-                                <CardDiv
-                                    key={`${card.id}_DashboardCard`}
-                                    onDrop={(e) => dropHandler(e, card)}
-                                    card={card}
-                                >
-                                    {card.isSketchy ? "" : <span>{card.title}</span>}
-                                </CardDiv>
-                            ))}
-                        </>
-                    )}
-                </DashboardDiv>
+                {dashboardElements.length > 0 && (
+                    <DashboardDiv onDragOver={dragOverHandler} onDrop={dropCardHandler}>
+                        {dashboardElements.map((card) => (
+                            <CardDiv
+                                key={`${card.id}_DashboardCard`}
+                                onDrop={(e) => dropHandler(e, card)}
+                                card={card}
+                            >
+                                {card.isSketchy ? "" : <span>{card.title}</span>}
+                            </CardDiv>
+                        ))}
+                    </DashboardDiv>
+                )}
             </GameplayDiv>
-            {win && <WinningBanner></WinningBanner>}
+            {!dashboardElements.some((item) => item.isSketchy === true) && (
+                <WinningBanner></WinningBanner>
+            )}
         </Div>
     );
 }

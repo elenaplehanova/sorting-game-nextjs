@@ -1,9 +1,9 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { createWrapper } from "next-redux-wrapper";
-import setupReducer from "./reducers/SetupSlice";
+import settingsReducer from "./reducers/SettingsSlice";
 
 const rootReducer = combineReducers({
-    setupReducer,
+    settingsReducer,
 });
 
 export const setupStore = () => {
