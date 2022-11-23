@@ -277,9 +277,14 @@ export default function Gameplay() {
     };
 
     const [myElements, setMyElements] = useState<ICard[]>(() => generateElements());
+
+    let whichElementDontShow = gameSettings.orderToHigh ? 0 : myElements.length - 1;
+
     const [elements, setElements] = useState<ICard[]>([]);
     useEffect(() => {
-        let array: ICard[] = _.shuffle(myElements.filter((card) => card.id !== 0));
+        let array: ICard[] = _.shuffle(
+            myElements.filter((card) => card.id !== whichElementDontShow)
+        );
         setElements(
             array.map((card) => {
                 return { ...card, hidden: false };
@@ -291,7 +296,7 @@ export default function Gameplay() {
     useEffect(() => {
         setDashboardElements(
             myElements.map((card) => {
-                return { ...card, isSketchy: card.id !== 0 ? true : false };
+                return { ...card, isSketchy: card.id !== whichElementDontShow ? true : false };
             })
         );
     }, []);
