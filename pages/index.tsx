@@ -24,7 +24,7 @@ const Div = styled.div`
 
 const Form = styled.form`
     display: grid;
-    gap: 4rem;
+    gap: 3rem;
 
     position: relative;
     padding: 2rem;
@@ -55,7 +55,7 @@ const WarningButton = styled(Button)`
 
 const LinkButton = styled(Link)`
     text-decoration: none;
-    padding-top: 2rem;
+    padding-top: 1.5rem;
 `;
 
 export default function Home() {

@@ -39,10 +39,20 @@ const sketchyCard = () => css`
 `;
 
 const regularCard = (imageUrl: string) => css`
+    position: relative;
+    width: 6rem;
+    aspect-ratio: 1;
+
     background-size: contain;
     background-repeat: no-repeat;
-    background-position: center;
     background-image: url(${imageUrl});
+
+    & > span {
+        position: absolute;
+        display: inline-table;
+        inset: 0;
+        margin: auto;
+    }
 `;
 
 const textStyleCard = css`
@@ -76,7 +86,6 @@ const CardDiv = styled.div<Props>`
     ${textStyleCard};
     font-size: var(--fs-900);
 
-    padding: 2rem;
     position: relative;
 
     ${({ card, indexCard, countCards }) => {
@@ -194,7 +203,7 @@ const DashboardDiv = styled.div`
     background-color: hsl(7, 19%, 90%);
 
     height: max-content;
-    padding-block: 0.7rem;
+    padding-block: 1.5rem;
     box-shadow: inset 0px 0px 2px 10px hsl(35, 18%, 81%);
     border-radius: 2.5rem;
 
@@ -357,7 +366,7 @@ export default function Gameplay() {
                                 indexCard={index}
                                 countCards={elements.length}
                             >
-                                {card.title}
+                                <span>{card.title}</span>
                             </CardDiv>
                         ))}
                     </ElementsDiv>

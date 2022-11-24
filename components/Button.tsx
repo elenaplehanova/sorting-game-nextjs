@@ -8,15 +8,11 @@ interface Props {
 const Button = styled.button<Props>`
     border: none;
     border-radius: 1rem;
-    cursor: pointer;
 
-    & * {
-        text-decoration: none;
-    }
-
-    &:focus,
-    &:hover {
-        box-shadow: inset 0 0 15px hsl(var(--clr-dark));
+    &:focus:not([disabled]),
+    &:hover:not([disabled]) {
+        cursor: pointer;
+        box-shadow: inset 0 0 0.5rem hsl(var(--clr-dark));
         transition: all 0.2s;
     }
 `;
