@@ -23,6 +23,9 @@ const Div = styled.div`
 `;
 
 const Form = styled.form`
+    display: grid;
+    gap: 4rem;
+
     position: relative;
     padding: 2rem;
     margin: auto;
@@ -33,10 +36,6 @@ const Form = styled.form`
     border-radius: 2rem;
     background: linear-gradient(hsl(var(--clr-white)), hsl(var(--clr-white))) padding-box,
         linear-gradient(hsl(var(--clr-light-violet)), hsl(var(--clr-dark-violet))) border-box;
-
-    & > *:not(:first-child) {
-        margin-top: 4rem;
-    }
 `;
 
 const ButtonsDiv = styled.div`
@@ -52,6 +51,11 @@ const WarningButton = styled(Button)`
     & * {
         color: hsl(var(--clr-dark));
     }
+`;
+
+const LinkButton = styled(Link)`
+    text-decoration: none;
+    padding-top: 2rem;
 `;
 
 export default function Home() {
@@ -104,9 +108,14 @@ export default function Home() {
                         По убыванию
                     </WarningButton>
                 </ButtonsDiv>
-                <SuccessButton onClick={() => dispatch(setGameSettings(gameSettingsLocal))}>
-                    <Link href="/gameplay">Играть</Link>
-                </SuccessButton>
+                <LinkButton
+                    onClick={() => {
+                        dispatch(setGameSettings(gameSettingsLocal));
+                    }}
+                    href="/gameplay"
+                >
+                    <SuccessButton>Играть</SuccessButton>
+                </LinkButton>
             </Form>
         </Div>
     );

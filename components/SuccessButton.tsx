@@ -6,10 +6,7 @@ const SuccessButton = styled(Button)`
     margin: auto;
     background-color: hsl(var(--clr-green));
     padding-inline: 3rem;
-
-    & * {
-        color: hsl(var(--clr-white));
-    }
+    color: hsl(var(--clr-white));
 `;
 
 export default SuccessButton;

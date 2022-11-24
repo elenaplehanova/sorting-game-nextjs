@@ -119,7 +119,8 @@ const Star = styled.div`
     background-size: contain;
 `;
 
-const Button = styled(SuccessButton)`
+const LinkButton = styled(Link)`
+    text-decoration: none;
     z-index: 1100;
 `;
 
@@ -129,9 +130,9 @@ const WinningBanner: React.FC = () => {
             <WinningBannerDiv>
                 <H1>Победа!</H1>
                 <P>Молодец! Ты успешно справился с заданием!</P>
-                <Button>
-                    <Link href="/">Заново</Link>
-                </Button>
+                <LinkButton href="/">
+                    <SuccessButton>Заново</SuccessButton>
+                </LinkButton>
                 <BorderStars>
                     <Star></Star>
                     <Star></Star>
