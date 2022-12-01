@@ -47,8 +47,9 @@ const WarningButton = styled(Button)`
     background-color: hsl(var(--clr-yellow));
     border-radius: 2rem;
     padding-inline: 2rem;
+    color: hsl(var(--clr-dark) / 0.5);
 
-    & * {
+    &[disabled] {
         color: hsl(var(--clr-dark));
     }
 `;
@@ -101,10 +102,10 @@ export default function Home() {
                     setValue={setValue}
                 ></Slider>
                 <ButtonsDiv>
-                    <WarningButton disabled={!orderToHigh} onClick={buttonHandler}>
+                    <WarningButton disabled={orderToHigh} onClick={buttonHandler}>
                         По возрастанию
                     </WarningButton>
-                    <WarningButton disabled={orderToHigh} onClick={buttonHandler}>
+                    <WarningButton disabled={!orderToHigh} onClick={buttonHandler}>
                         По убыванию
                     </WarningButton>
                 </ButtonsDiv>
