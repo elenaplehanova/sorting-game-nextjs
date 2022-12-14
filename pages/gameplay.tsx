@@ -27,7 +27,11 @@ const GameplayDiv = styled.div`
 
     background-position: center;
     background-repeat: no-repeat;
-    background-image: url("/images/donuts/background-donuts.png");
+    background-image: url("/images/donuts/background-left-image.svg"),
+        url("/images/donuts/background-right-image.svg");
+    background-position: left top, right top;
+    background-size: 35%, 20%;
+    background-color: hsl(32, 44%, 77%);
 `;
 
 const sketchyCard = () => css`
